@@ -1,6 +1,8 @@
-module.exports = function (grunt) {
+'use strict';
 
-    'use strict';
+var escapeSpecialChars = require('../lib/escapeSpecialChars');
+
+module.exports = function (grunt) {
 
     var spawn = require('child_process').spawn,
         path = require('path'),
@@ -179,7 +181,10 @@ module.exports = function (grunt) {
         }
 
         for (var buildArg in options.buildParameters) {
-            var p = '/property:' + buildArg + '=' + options.buildParameters[buildArg];
+            var p = '/property:' + buildArg + "=" + 
+                (buildArg === "Password" && options.buildParameters[buildArg] !== null)
+                ? escapeSpecialChars(options.buildParameters[buildArg])
+                : options.buildParameters[buildArg];
             grunt.verbose.writeln('setting property: ' + p);
             args.push(p);
         }
