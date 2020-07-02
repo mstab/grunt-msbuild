@@ -181,10 +181,12 @@ module.exports = function (grunt) {
         }
 
         for (var buildArg in options.buildParameters) {
-            var p = '/property:' + buildArg + "=" + 
-                (buildArg === "Password" && options.buildParameters[buildArg] !== null)
-                ? escapeSpecialChars(options.buildParameters[buildArg])
-                : options.buildParameters[buildArg];
+            if(buildArg === 'Password' && options.buildParameters[buildArg] !== null){
+                var p = '/property:' + buildArg + '=' + escapeSpecialChars(options.buildParameters[buildArg]);
+            }
+            else {
+                var p = '/property:' + buildArg + '=' + options.buildParameters[buildArg];
+            }
             grunt.verbose.writeln('setting property: ' + p);
             args.push(p);
         }
